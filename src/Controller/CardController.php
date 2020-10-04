@@ -69,10 +69,7 @@ class CardController extends AbstractController
             ->getQuery()
             ->getSingleScalarResult();
 
-        $this->GenerateNewCard($cardRep, $request, $amount_cards);
-        //return new Response($this->);
-
-        return $this->redirectToRoute('card_get_one', array('id' => $random_id));
+        return $this->redirectToRoute('card_get_one', array('id' => $this->GenerateNewCard($cardRep, $request, $amount_cards)));
     }
 
     /**
