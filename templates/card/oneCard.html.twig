@@ -15,14 +15,14 @@
     <div class="setting_menu hiden">
         <h1>tags</h1>
         <div id="tags">  
-            <label>NSFW: <input type="checkbox" id="tag1" name="tags" value="NSFW"></label>
-            <label>SFW: <input type="checkbox" id="tag2" name="tags" value="SFW"></label>
-            <label>2P: <input type="checkbox" id="tag3" name="tags" value="2P"></label>
-            <label>3P: <input type="checkbox" id="tag4" name="tags" value="3P"></label>
-            <label>FOOD: <input type="checkbox" id="tag5" name="tags" value="FOOD"></label>
-            <label>CLOTHES: <input type="checkbox" id="tag6" name="tags" value="CLOTHES"></label>
-            <label>MARKER: <input type="checkbox" id="tag7" name="tags" value="MARKER"></label>
-            <label>PHONE: <input type="checkbox" id="tag8" name="tags" value="PHONE"></label>
+            <label>NSFW: <input type="checkbox" id="tag1" name="tags" value="NSFW" checked></label>
+            <label>SFW: <input type="checkbox" id="tag2" name="tags" value="SFW" checked></label>
+            <label>2P: <input type="checkbox" id="tag3" name="tags" value="2P" checked></label>
+            <label>3P: <input type="checkbox" id="tag4" name="tags" value="3P" checked></label>
+            <label>FOOD: <input type="checkbox" id="tag5" name="tags" value="FOOD" checked></label>
+            <label>CLOTHES: <input type="checkbox" id="tag6" name="tags" value="CLOTHES" checked></label>
+            <label>MARKER: <input type="checkbox" id="tag7" name="tags" value="MARKER" checked></label>
+            <label>PHONE: <input type="checkbox" id="tag8" name="tags" value="PHONE" checked></label>
         </div>
         <button id="comfirm" onclick="confirm()">
             confirm
@@ -48,7 +48,7 @@
     }
 
     function switch_card(params) {
-        str = 'http://localhost:8000/card/one/new?tags=' + localStorage.getItem("tags")
+        str = 'http://104.248.164.29/card/one/new?tags=' + localStorage.getItem("tags")
         console.log(str);
         window.location.href = str
     }
