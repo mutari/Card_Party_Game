@@ -126,22 +126,27 @@ class CardController extends AbstractController
 
         $res = $cardRep->find($random_id);
 
-        $CardTags = explode(",", $res->getTag());
-        $UserTags = explode(",", $request->query->get("tags"));
+        $tags = $request->query->get("tags");
 
-        foreach($CardTags as $CardValue) 
+        $CardTags = explode(",", $res->getTag());
+        $UserTags = explode(",", $tags);
+
+        if($tags != "null" || !is_null($tags))
         {
-            $bool = false;
-            foreach($UserTags as $UserValue)
+            foreach($CardTags as $CardValue) 
             {
-                if($CardValue == $UserValue) 
+                $bool = false;
+                foreach($UserTags as $UserValue)
                 {
-                    $bool = true;
-                    break;
+                    if($CardValue == $UserValue) 
+                    {
+                        $bool = true;
+                        break;
+                    }
                 }
+                if(!$bool)
+                    return $this->GenerateNewCard($cardRep, $request, $amount_cards);
             }
-            if(!$bool)
-                return $this->GenerateNewCard($cardRep, $request, $amount_cards);
         }
 
         return $random_id;
