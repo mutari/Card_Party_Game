@@ -7,10 +7,9 @@
             
         </button>
     </header>
-    <div class="card  {{card.type=='EXTREME' ? 'EXTREME'}}" onclick="switch_card()">
-        <p>
-            {{card.text}}
-        </p>
+    <!--card.type=='EXTREME' ? 'EXTREME'-->
+    <div class="card  " onclick="switch_card()">
+        <p id="text"></p>
     </div>
     <div class="setting_menu hiden">
         <h1>tags</h1>
@@ -30,7 +29,18 @@
     </div>
 </main>
 
-<script>
+{% for card in card_data %}
+    <pre data-card-text="{{card.text}}" data-card-id="{{card.id}}" data-card-type="{{card.Type}}" data-card-tag="{{card.tag}}" class="hiden"></pre>
+{% endfor %}
+
+<script defer> 
+    confirm();
+    domdata = document.querySelectorAll('[data-card-text]')
+    data = Array.from(domdata).map(e => ({"text": e.dataset.cardText, "id": e.dataset.cardId, "type": e.dataset.cardType, "tag": e.dataset.cardTag}));
+    card = getNewRandom();
+    document.querySelector('#text').innerHTML = card.text;
+
+
     if(localStorage.getItem('dark-mode') == "false") {
         document.querySelector('main').classList.remove('DARK_MODE')
         document.querySelector('.switch').classList.remove('DARK_MODE')
@@ -48,9 +58,8 @@
     }
 
     function switch_card(params) {
-        str = 'http://104.248.164.29/card/one/new?tags=' + localStorage.getItem("tags")
-        console.log(str);
-        window.location.href = str
+        card = getNewRandom();
+        document.querySelector('#text').innerHTML = card.text;
     }
 
     function switch_settings() {
@@ -63,7 +72,31 @@
             data.push(input.value);
         });
         localStorage.setItem("tags", data.join(','))
-        document.querySelector('.setting_menu').classList.toggle('hiden')
+        document.querySelector('.setting_menu').classList.add('hiden')
+    }
+
+    function getNewRandom() {
+        random = data[Math.floor(Math.random() * data.length-1) + 1];
+        
+
+        cardTags = random.tag.split(',');
+        userTags = (localStorage.getItem("tags") ? localStorage.getItem("tags") : "").split(',')
+
+        if(cardTags) {
+            for(var cardTag = 0; cardTag <= cardTags.length; cardTag++) {
+                bool = false;
+                for(var userTag = 0; userTag <= userTags.length; userTag++) {
+                    if(userTag == cardTag) {
+                        bool = true;
+                        break;
+                    }
+                }
+                if(!bool)
+                    return getNewRandom();
+            }
+        }
+        return random;
+
     }
 
 </script>
