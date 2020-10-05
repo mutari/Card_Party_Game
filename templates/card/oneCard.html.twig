@@ -7,7 +7,6 @@
             
         </button>
     </header>
-    <!--card.type=='EXTREME' ? 'EXTREME'-->
     <div class="card  " onclick="switch_card()">
         <p id="text"></p>
     </div>
@@ -37,8 +36,7 @@
     confirm();
     domdata = document.querySelectorAll('[data-card-text]')
     data = Array.from(domdata).map(e => ({"text": e.dataset.cardText, "id": e.dataset.cardId, "type": e.dataset.cardType, "tag": e.dataset.cardTag}));
-    card = getNewRandom();
-    document.querySelector('#text').innerHTML = card.text;
+    switch_card();
 
 
     if(localStorage.getItem('dark-mode') == "false") {
@@ -57,8 +55,13 @@
         localStorage.setItem('dark-mode', mode=="false" ? "true" : "false");
     }
 
-    function switch_card(params) {
+    function switch_card() {
         card = getNewRandom();
+        console.log(card.type);
+        if(card.type == "EXTREME")
+            document.querySelector('.card').classList.add('EXTREME');
+        else
+            document.querySelector('.card').classList.remove('EXTREME');
         document.querySelector('#text').innerHTML = card.text;
     }
 
