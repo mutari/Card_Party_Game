@@ -1,27 +1,22 @@
-confirm();
 domdata = document.querySelectorAll('[data-card-text]')
 data = Array.from(domdata).map(e => ({"text": e.dataset.cardText, "id": e.dataset.cardId, "type": e.dataset.cardType, "tag": e.dataset.cardTag}));
+MEDIUM = data.filter(d => d.type == "NORMAL")
+EXTREME = data.filter(d => d.type == "EXTREME")
+HARD = data.filter(d => d.type == "HARD");
+chance1 = localStorage.getItem('chance_medium');
+chance2 = localStorage.getItem('chance_hard');
+chance3 = localStorage.getItem('chance_extreme');
+CHANCE_MEDIUM = parseInt(chance1 ? chance1 : 60);
+CHANCE_HARD = parseInt(chance2 ? chance2 : 30);
+CHANCE_EXTREME = parseInt(chance3 ? chance3 : 10);
+RESENT = 0;
+
 switch_card();
 
-
-if(localStorage.getItem('dark-mode') == "false") {
-    document.querySelector('main').classList.remove('DARK_MODE')
-    document.querySelector('.switch').classList.remove('DARK_MODE')
-} else {
-    localStorage.setItem('dark-mode', true);
-    document.querySelector('main').classList.add('DARK_MODE')
-    document.querySelector('.switch').classList.add('DARK_MODE')
-}
-
-function switch_dark_mode() {
-    mode = localStorage.getItem('dark-mode');
-    document.querySelector('main').classList.toggle('DARK_MODE')
-    document.querySelector('.switch').classList.toggle('DARK_MODE')
-    localStorage.setItem('dark-mode', mode=="false" ? "true" : "false");
-}
-
 function switch_card() {
-    card = getNewRandom();
+    
+    card = getNewRandom(getRandomData());
+    RESENT = card.id;
     console.log(card.type);
     if(card.type == "EXTREME")
         document.querySelector('.card').classList.add('EXTREME');
@@ -31,36 +26,53 @@ function switch_card() {
 }
 
 function switch_settings() {
-    document.querySelector('.setting_menu').classList.toggle('hiden')
+    document.querySelector('#setting_menu').classList.toggle('hiden')
+    document.querySelector('.card').classList.toggle('hiden')
 }
 
-function confirm() {
+function comfirm() {
+    console.log("hello")
     let data = []
     document.querySelectorAll('input[name="tags"]:checked').forEach(input => {
         data.push(input.value);
     });
     localStorage.setItem("tags", data.join(','))
-    document.querySelector('.setting_menu').classList.add('hiden')
+    localStorage.setItem('chance_medium', document.querySelector('input[name="medium"]').value);
+    localStorage.setItem('chance_hard', document.querySelector('input[name="hard"]').value);
+    localStorage.setItem('chance_extreme', document.querySelector('input[name="extreme"]').value);
+    document.querySelector('#setting_menu').classList.add('hiden')
+    document.querySelector('.card').classList.remove('hiden')
 }
 
-function getNewRandom() {
+function getRandomData() {
+    random = Math.floor(Math.random() * 100) + 1;
+    console.log(random);
+
+    if(random > 0 && random <= CHANCE_MEDIUM)
+        return MEDIUM;
+    if(random > CHANCE_MEDIUM && random <= (CHANCE_MEDIUM + CHANCE_HARD))
+        return HARD;
+    return EXTREME;
+}
+
+function getNewRandom(data) {
     random = data[Math.floor(Math.random() * data.length-1) + 1];
-    
 
     cardTags = random.tag.split(',');
     userTags = (localStorage.getItem("tags") ? localStorage.getItem("tags") : "").split(',')
+    chance = (localStorage.getItem("chance") ? localStorage.getItem("chance") : "").split(',')
 
     if(cardTags) {
         for(var cardTag = 0; cardTag <= cardTags.length; cardTag++) {
             bool = false;
             for(var userTag = 0; userTag <= userTags.length; userTag++) {
-                if(userTag == cardTag) {
+                if(userTags[userTag] == cardTags[cardTag] && RESENT != random.id) {
                     bool = true;
                     break;
                 }
             }
             if(!bool)
-                return getNewRandom();
+                return getNewRandom(data);
         }
     }
     return random;
