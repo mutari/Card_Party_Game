@@ -11,11 +11,21 @@ CHANCE_HARD = parseInt(chance2 ? chance2 : 30);
 CHANCE_EXTREME = parseInt(chance3 ? chance3 : 10);
 RESENT = 0;
 
+const trampoline = fn => (...args) => {
+    let result = fn(...args)
+    while (typeof result === 'function') {
+        result = result()
+    }
+    return result
+}
+
+const gewNewRandom = trampoline(getNewRandomRec)
+
 switch_card();
 
 function switch_card() {
     
-    card = getNewRandom(getRandomData());
+    card = gewNewRandom(getRandomData());
     RESENT = card.id;
     console.log(card.type);
     if(card.type == "EXTREME")
@@ -55,14 +65,16 @@ function getRandomData() {
     return EXTREME;
 }
 
-function getNewRandom(data) {
+function getNewRandomRec(data) {
+    if(data.length == 1)
+        return data[0];
     random = data[Math.floor(Math.random() * data.length-1) + 1];
 
     cardTags = random.tag.split(',');
     userTags = (localStorage.getItem("tags") ? localStorage.getItem("tags") : "").split(',')
-    chance = (localStorage.getItem("chance") ? localStorage.getItem("chance") : "").split(',')
 
-    if(cardTags) {
+    if(cardTags && userTags  && userTags[0] != "") {
+        console.log(cardTags, userTags, random);
         for(var cardTag = 0; cardTag <= cardTags.length; cardTag++) {
             bool = false;
             for(var userTag = 0; userTag <= userTags.length; userTag++) {
@@ -72,7 +84,7 @@ function getNewRandom(data) {
                 }
             }
             if(!bool)
-                return getNewRandom(data);
+                return () => getNewRandomRec(data);
         }
     }
     return random;
