@@ -1,0 +1,143 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    outline: none;
+    box-shadow: none;
+}
+
+body {
+    max-height: 100vh;
+    max-width: 100vw;
+    overflow: hidden;
+}
+
+main {
+    width: 100%;
+    height: 100%;
+}
+
+/*
+    header
+*/
+
+header {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+i {
+    margin-right: 30px;
+    margin-top: 20px;
+    float: right;
+    font-size: clamp(10px, 15vw, 100px);
+    color: tomato
+}
+
+/*
+    settings
+*/
+#setting_menu {
+    padding: 30px;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+#setting_menu #setting {
+    display: flex;
+}
+@media only screen and (max-width: 480px) {
+    #setting_menu #setting {
+        flex-direction: column;
+    }
+
+    #setting_menu #setting div {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 20px;
+    }
+
+    #setting_menu h1, #setting_menu p, #setting_menu label {
+        font-size: 130%;
+    }
+}
+
+#setting h1 {
+    border-bottom: solid 1px gray;
+    padding: 10px;
+}
+
+#setting div {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 20px;
+}
+
+#setting div div {
+    width: 100%;;
+}
+
+#setting div div label {
+    margin: 3px;
+} 
+
+#setting_menu #comfirm {
+    color: white;
+    background-color: black;
+    border: none;
+    border-bottom: 1px gray solid;
+    padding: 5px;
+}
+
+#setting_menu div#button_menu {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+input[type="tel"] {
+    background-color: black;
+    border: none;
+    border-bottom: solid 1px gray;
+    color: white;
+    width: 50px;
+}
+
+
+/*
+    cards
+*/
+
+.card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    color: white;
+    font-size: clamp(19px, 15vw, 150px);
+    text-align: center;
+}
+
+#text {
+    user-select: none;
+}
+
+
+.EXTREME {
+    background-color: rgb(225, 0, 0);
+}
+
+.hiden {
+    display: none;
+}

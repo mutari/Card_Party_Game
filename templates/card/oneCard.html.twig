@@ -1,30 +1,49 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
 <main class="">
     <header>
+        <i class="fas fa-ellipsis-h" onclick="switch_settings()"></i>
+        <!--
         <button class="setting cirkel" onclick="switch_settings()">    
 
         </button>
-        <button class="switch cirkel" onclick="switch_dark_mode()">
-            
-        </button>
+        -->
     </header>
     <div class="card  " onclick="switch_card()">
         <p id="text"></p>
     </div>
-    <div class="setting_menu hiden">
-        <h1>tags</h1>
-        <div id="tags">  
-            <label>NSFW: <input type="checkbox" id="tag1" name="tags" value="NSFW" checked></label>
-            <label>SFW: <input type="checkbox" id="tag2" name="tags" value="SFW" checked></label>
-            <label>2P: <input type="checkbox" id="tag3" name="tags" value="2P" checked></label>
-            <label>3P: <input type="checkbox" id="tag4" name="tags" value="3P" checked></label>
-            <label>FOOD: <input type="checkbox" id="tag5" name="tags" value="FOOD" checked></label>
-            <label>CLOTHES: <input type="checkbox" id="tag6" name="tags" value="CLOTHES" checked></label>
-            <label>MARKER: <input type="checkbox" id="tag7" name="tags" value="MARKER" checked></label>
-            <label>PHONE: <input type="checkbox" id="tag8" name="tags" value="PHONE" checked></label>
+    <div id="setting_menu" class="hiden">
+        <div id="setting">
+            <div id="tags">  
+                <h1>tags</h1>
+                <div>
+                    <label>NSFW: <input type="checkbox" id="tag1" name="tags" value="NSFW" checked></label>
+                    <label>SFW: <input type="checkbox" id="tag2" name="tags" value="SFW" checked></label>
+                    <label>2P: <input type="checkbox" id="tag3" name="tags" value="2P" checked></label>
+                    <label>3P: <input type="checkbox" id="tag4" name="tags" value="3P" checked></label>
+                    <label>FOOD: <input type="checkbox" id="tag5" name="tags" value="FOOD" checked></label>
+                    <label>CLOTHES: <input type="checkbox" id="tag6" name="tags" value="CLOTHES" checked></label>
+                    <label>MARKER: <input type="checkbox" id="tag7" name="tags" value="MARKER" checked></label>
+                    <label>PHONE: <input type="checkbox" id="tag8" name="tags" value="PHONE" checked></label>
+                </div>
+            </div>
+            <div id="others">
+                <h1>Chance</h1>
+                <div>
+                    <label>MEDIUM %: <input name="medium" type="tel" min=0 max=100 value=60></label>
+                    <label>HARD %: <input name="hard" type="tel" min=0 max=100 value=30></label>
+                    <label>EXTREME %: <input name="extreme" type="tel" min=0 max=100 value=10></label>
+                </div>    
+            </div>
         </div>
-        <button id="comfirm" onclick="confirm()">
-            confirm
-        </button>
+        <div id="button_menu">
+            <button id="comfirm" onclick="comfirm()">
+                confirm
+            </button>
+        </div>
     </div>
 </main>
 
@@ -32,202 +51,11 @@
     <pre data-card-text="{{card.text}}" data-card-id="{{card.id}}" data-card-type="{{card.Type}}" data-card-tag="{{card.tag}}" class="hiden"></pre>
 {% endfor %}
 
-<script defer> 
-    confirm();
-    domdata = document.querySelectorAll('[data-card-text]')
-    data = Array.from(domdata).map(e => ({"text": e.dataset.cardText, "id": e.dataset.cardId, "type": e.dataset.cardType, "tag": e.dataset.cardTag}));
-    switch_card();
+{% block javascripts %}
+    <script src="https://kit.fontawesome.com/33b9e3b162.js" crossorigin="anonymous"></script>
+    <script src="{{asset('script.js')}}" defer></script>
+{% endblock %}
 
-
-    if(localStorage.getItem('dark-mode') == "false") {
-        document.querySelector('main').classList.remove('DARK_MODE')
-        document.querySelector('.switch').classList.remove('DARK_MODE')
-    } else {
-        localStorage.setItem('dark-mode', true);
-        document.querySelector('main').classList.add('DARK_MODE')
-        document.querySelector('.switch').classList.add('DARK_MODE')
-    }
-
-    function switch_dark_mode() {
-        mode = localStorage.getItem('dark-mode');
-        document.querySelector('main').classList.toggle('DARK_MODE')
-        document.querySelector('.switch').classList.toggle('DARK_MODE')
-        localStorage.setItem('dark-mode', mode=="false" ? "true" : "false");
-    }
-
-    function switch_card() {
-        card = getNewRandom();
-        console.log(card.type);
-        if(card.type == "EXTREME")
-            document.querySelector('.card').classList.add('EXTREME');
-        else
-            document.querySelector('.card').classList.remove('EXTREME');
-        document.querySelector('#text').innerHTML = card.text;
-    }
-
-    function switch_settings() {
-        document.querySelector('.setting_menu').classList.toggle('hiden')
-    }
-
-    function confirm() {
-        let data = []
-        document.querySelectorAll('input[name="tags"]:checked').forEach(input => {
-            data.push(input.value);
-        });
-        localStorage.setItem("tags", data.join(','))
-        document.querySelector('.setting_menu').classList.add('hiden')
-    }
-
-    function getNewRandom() {
-        random = data[Math.floor(Math.random() * data.length-1) + 1];
-        
-
-        cardTags = random.tag.split(',');
-        userTags = (localStorage.getItem("tags") ? localStorage.getItem("tags") : "").split(',')
-
-        if(cardTags) {
-            for(var cardTag = 0; cardTag <= cardTags.length; cardTag++) {
-                bool = false;
-                for(var userTag = 0; userTag <= userTags.length; userTag++) {
-                    if(userTag == cardTag) {
-                        bool = true;
-                        break;
-                    }
-                }
-                if(!bool)
-                    return getNewRandom();
-            }
-        }
-        return random;
-
-    }
-
-</script>
-
-<style>
-
-    * {
-        padding: 0;
-        margin: 0;
-        box-sizing: border-box;
-        outline: none;
-        box-shadow: none;
-    }
-
-
-    /*settings*/
-    .setting_menu {
-        display: flex;
-        flex-direction: column;
-        padding: 0;
-        margin: 0;
-        position: fixed;
-        top: 50%;
-        bottom: 50%;
-        transform: translate(0, -50%);
-        border: solid 2px red;
-    }
-
-    h1 {
-        flex: 1;
-        width: 100%;
-        height: 90px;
-        text-align: center;
-    }
-
-    .hiden {
-        display: none;
-    }
-
-    #tags {
-        flex: 10;
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    label {
-        padding: 10px;
-    }
-
-    input {
-        width: 100px;
-    }
-
-    #comfirm {
-        margin: 10px;
-        background-color: black;
-        border: none;
-        border-bottom: solid 1px gray;
-        font-size: 25px;
-        color: white;
-    }
-
-    /*shiterino*/
-
-    main {
-        background-color: white;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    main.DARK_MODE {
-        background-color: black;
-    }
-
-    header {
-        position: absolute;
-        width: 100%;
-        top: 0;
-    }
-
-    .cirkel.DARK_MODE {
-        background-color: white;
-    }
-
-    .cirkel {
-        background-color: black;
-        width: 5vw;
-        float: right;
-        border-radius: 50%;
-        margin: 10px;
-        color: white;
-    }
-
-    .setting {
-        background-color: gray;
-    }
-
-    .cirkel:after {
-        content: "";
-        display: block;
-        padding-bottom: 100%;
-    }
-
-    div {
-        background-color: black;
-        display: flex;
-        padding: 25px;
-        padding-top: 50px;
-        color: white;
-        border-radius: 19px;
-        width:  55%;
-        height: 65%;
-        max-width: 600px;
-        max-height: 850px;
-        font-size: 3vh;
-        justify-content: flex-end;
-    }   
-
-    p {
-        text-align: center;
-        width: 100%;
-    }
-
-    .EXTREME {
-        background-color: rgb(225, 0, 0);
-    }
-
-</style>
+{% block stylesheets %}
+    <link href="{{ asset('style.css') }}" rel="stylesheet"/>
+{% endblock %}
