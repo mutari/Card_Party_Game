@@ -1,4 +1,9 @@
+console.log("test ::: ", 0x000011 + 3);
+
 domdata = document.querySelectorAll('[data-card-text]')
+document.querySelector("input[name='medium']").addEventListener('change', chance)
+document.querySelector("input[name='hard']").addEventListener('change', chance)
+document.querySelector("input[name='extreme']").addEventListener('change', chance)
 data = Array.from(domdata).map(e => ({"text": e.dataset.cardText, "id": e.dataset.cardId, "type": e.dataset.cardType, "tag": e.dataset.cardTag}));
 MEDIUM = data.filter(d => d.type == "NORMAL")
 EXTREME = data.filter(d => d.type == "EXTREME")
@@ -23,6 +28,10 @@ const gewNewRandom = trampoline(getNewRandomRec)
 
 switch_card();
 
+function chance() {
+    console.log(this.name);
+}
+
 function switch_card() {
     
     card = gewNewRandom(getRandomData());
@@ -46,10 +55,13 @@ function comfirm() {
     document.querySelectorAll('input[name="tags"]:checked').forEach(input => {
         data.push(input.value);
     });
+    CHANCE_MEDIUM = document.querySelector('input[name="medium"]').value;
+    CHANCE_HARD = document.querySelector('input[name="hard"]').value;
+    CHANCE_EXTREME = document.querySelector('input[name="extreme"]').value;
     localStorage.setItem("tags", data.join(','))
-    localStorage.setItem('chance_medium', document.querySelector('input[name="medium"]').value);
-    localStorage.setItem('chance_hard', document.querySelector('input[name="hard"]').value);
-    localStorage.setItem('chance_extreme', document.querySelector('input[name="extreme"]').value);
+    localStorage.setItem('chance_medium', CHANCE_MEDIUM);
+    localStorage.setItem('chance_hard', CHANCE_HARD);
+    localStorage.setItem('chance_extreme', CHANCE_EXTREME);
     document.querySelector('#setting_menu').classList.add('hiden')
     document.querySelector('.card').classList.remove('hiden')
 }
@@ -58,7 +70,7 @@ function getRandomData() {
     random = Math.floor(Math.random() * 100) + 1;
     console.log(random);
 
-    if(random > 0 && random <= CHANCE_MEDIUM)
+    if(random <= CHANCE_MEDIUM)
         return MEDIUM;
     if(random > CHANCE_MEDIUM && random <= (CHANCE_MEDIUM + CHANCE_HARD))
         return HARD;
