@@ -16,6 +16,7 @@ CHANCE_HARD = parseInt(chance2 ? chance2 : 30);
 CHANCE_EXTREME = parseInt(chance3 ? chance3 : 10);
 RESENT = 0;
 
+
 const trampoline = fn => (...args) => {
     let result = fn(...args)
     while (typeof result === 'function') {
@@ -34,7 +35,7 @@ function chance() {
 
 function switch_card() {
     
-    card = gewNewRandom(getRandomData());
+    const card = gewNewRandom(getRandomData());
     RESENT = card.id;
     console.log(card.type);
     if(card.type == "EXTREME")
@@ -42,6 +43,9 @@ function switch_card() {
     else
         document.querySelector('.card').classList.remove('EXTREME');
     document.querySelector('#text').innerHTML = card.text;
+
+    //cardText = document.querySelector('.card');
+    //cardText.style.fontSize = getFontSize(cardText.textContent.length);
 }
 
 function switch_settings() {

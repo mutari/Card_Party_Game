@@ -30,10 +30,9 @@ header {
 }
 
 i {
-    margin-right: 30px;
-    margin-top: 20px;
+    margin: 20px;
     float: right;
-    font-size: clamp(10px, 15vw, 100px);
+    font-size: clamp(10px, 10vw, 70px);
     color: white;
 }
 
