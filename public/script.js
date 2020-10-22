@@ -51,10 +51,12 @@ function switch_card() {
 function switch_settings() {
     document.querySelector('#setting_menu').classList.toggle('hiden')
     document.querySelector('.card').classList.toggle('hiden')
+    document.querySelector('input[name="medium"]').value = CHANCE_MEDIUM;
+    document.querySelector('input[name="hard"]').value = CHANCE_HARD;
+    document.querySelector('input[name="extreme"]').value = CHANCE_EXTREME;
 }
 
 function comfirm() {
-    console.log("hello")
     let data = []
     document.querySelectorAll('input[name="tags"]:checked').forEach(input => {
         data.push(input.value);
@@ -62,6 +64,7 @@ function comfirm() {
     CHANCE_MEDIUM = document.querySelector('input[name="medium"]').value;
     CHANCE_HARD = document.querySelector('input[name="hard"]').value;
     CHANCE_EXTREME = document.querySelector('input[name="extreme"]').value;
+    console.log(CHANCE_EXTREME)
     localStorage.setItem("tags", data.join(','))
     localStorage.setItem('chance_medium', CHANCE_MEDIUM);
     localStorage.setItem('chance_hard', CHANCE_HARD);
@@ -74,11 +77,9 @@ function getRandomData() {
     random = Math.floor(Math.random() * 100) + 1;
     console.log(random);
 
-    if(random <= CHANCE_MEDIUM)
-        return MEDIUM;
-    if(random > CHANCE_MEDIUM && random <= (CHANCE_MEDIUM + CHANCE_HARD))
-        return HARD;
-    return EXTREME;
+    if(random <= parseInt(CHANCE_MEDIUM)) return MEDIUM;
+    else if(random <= parseInt(CHANCE_MEDIUM) + parseInt(CHANCE_HARD)) return HARD;
+    else return EXTREME;
 }
 
 function getNewRandomRec(data) {
