@@ -4,16 +4,8 @@
     <title>Drunk?</title>
 </head>
 
-
-<main class="">
-    <header>
-        <i class="fas fa-cogs" onclick="switch_settings()"></i>
-        <!--
-        <button class="setting cirkel" onclick="switch_settings()">    
-
-        </button>
-        -->
-    </header>
+<main class="owerflow">
+    <i class="fas fa-cogs" onclick="switch_settings()"></i>
     <div class="card  " onclick="switch_card()">
         <p id="text"></p>
     </div>
@@ -39,6 +31,13 @@
                     <label>HARD %: <input name="hard" type="tel" min=0 max=100 value=30></label>
                     <label>EXTREME %: <input name="extreme" type="tel" min=0 max=100 value=10></label>
                 </div>    
+            </div>
+            <div id="switchPlace">
+                <h1>SwitchPlace</h1>
+                <div>
+                    <label>START : <input name="start" type="tel" min=0 max=999 value=15></label>
+                    <label>END : <input name="end" type="tel" min=0 max=999 value=25></label>
+                </div>
             </div>
         </div>
         <div id="button_menu">
