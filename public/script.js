@@ -13,8 +13,8 @@ CHANCE_MEDIUM = parseInt(chance1 ? chance1 : 62);
 CHANCE_HARD = parseInt(chance2 ? chance2 : 30);
 CHANCE_EXTREME = parseInt(chance3 ? chance3 : 8);
 RESENT = 0;
-CHANCE_SWITCH_START = 15;
-CHANCE_SWITCH_END = 25;
+CHANCE_SWITCH_START = localStorage.getItem('switch_start') ? localStorage.getItem('switch_start') : 15;
+CHANCE_SWITCH_END = localStorage.getItem('switch_end') ? localStorage.getItem('switch_end') : 25;
 NUMBER_OF_CARDS_LATEST_SWITCH = localStorage.getItem('cards_latest_switch') ? localStorage.getItem('cards_latest_switch') : 0;
 
 
@@ -78,6 +78,8 @@ function switch_settings() {
     document.querySelector('input[name="medium"]').value = CHANCE_MEDIUM;
     document.querySelector('input[name="hard"]').value = CHANCE_HARD;
     document.querySelector('input[name="extreme"]').value = CHANCE_EXTREME;
+    document.querySelector('input[name="end"]').value = CHANCE_SWITCH_END;
+    document.querySelector('input[name="start"]').value = CHANCE_SWITCH_START;
 }
 
 function comfirm() {
@@ -94,6 +96,10 @@ function comfirm() {
     localStorage.setItem('chance_extreme', CHANCE_EXTREME);
     document.querySelector('#setting_menu').classList.add('hiden')
     document.querySelector('.card').classList.remove('hiden')
+    CHANCE_SWITCH_END = document.querySelector('input[name="end"]').value;
+    CHANCE_SWITCH_START = document.querySelector('input[name="start"]').value;
+    localStorage.setItem('switch_end', CHANCE_SWITCH_END);
+    localStorage.setItem('switch_start', CHANCE_SWITCH_START);
 }
 
 function getRandomData() {
