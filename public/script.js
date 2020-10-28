@@ -18,6 +18,19 @@ CHANCE_SWITCH_END = localStorage.getItem('switch_end') ? localStorage.getItem('s
 NUMBER_OF_CARDS_LATEST_SWITCH = localStorage.getItem('cards_latest_switch') ? localStorage.getItem('cards_latest_switch') : 0;
 
 
+function throttle (callback, limit) {
+    var wait = false;                  // Initially, we're not waiting
+    return function () {               // We return a throttled function
+        if (!wait) {                   // If we're not waiting
+            callback.call();           // Execute users function
+            wait = true;               // Prevent future invocations
+            setTimeout(function () {   // After a period of time
+                wait = false;          // And allow future invocations
+            }, limit);
+        }
+    }
+}
+
 const trampoline = fn => (...args) => {
     let result = fn(...args)
     while (typeof result === 'function') {
@@ -27,8 +40,6 @@ const trampoline = fn => (...args) => {
 }
 
 const gewNewRandom = trampoline(getNewRandomRec)
-
-switch_card();
 
 function chance() {
     console.log(this.name);
@@ -42,12 +53,19 @@ function switch_position() {
     return false;
 }
 
+let t = throttle(switch_card_func, 3000)
 function switch_card() {
+    t()
+}
+
+switch_card();
+
+function switch_card_func() {
     document.querySelector('.card').classList.remove('SWITCHPPLACE');
     console.log(NUMBER_OF_CARDS_LATEST_SWITCH)
     if(switch_position()) {
         document.querySelector('.card').classList.add('SWITCHPPLACE');
-        document.querySelector('#text').innerHTML = "Its time to switch places fucking alcoholics! Drink some more!";
+        document.querySelector('#text').innerHTML = "Its time to switch places you fucking alcoholics! Drink some more!";
         NUMBER_OF_CARDS_LATEST_SWITCH = 0;
         localStorage.setItem('cards_latest_switch', NUMBER_OF_CARDS_LATEST_SWITCH);
         return;
