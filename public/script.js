@@ -37,7 +37,7 @@ function chance() {
 function switch_position() {
     if(NUMBER_OF_CARDS_LATEST_SWITCH >= CHANCE_SWITCH_START && NUMBER_OF_CARDS_LATEST_SWITCH < CHANCE_SWITCH_END)
         return Math.random() >= 0.7 ? true : false;
-    if (NUMBER_OF_CARDS_LATEST_SWITCH == CHANCE_SWITCH_END)
+    if (NUMBER_OF_CARDS_LATEST_SWITCH >= CHANCE_SWITCH_END)
         return true;
     return false;
 }
